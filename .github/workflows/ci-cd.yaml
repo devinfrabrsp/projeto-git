@@ -1,0 +1,64 @@
+name: Pipeline-aula-github-actions
+
+on: 
+  pull_request:
+    branches: 
+        - main
+        - develop
+        - staging
+        - feature/*
+        - hotfix/*
+        - release/*
+    #paths: 
+    #  - 'docs/**'
+    #  - 'scripts/*.sh'
+
+  push: 
+    branches:
+      - main
+    #branches-ignore:
+    #  - develop
+    #  - staging
+    #  - feature/*
+    #  - hotfix/*
+    #  - release/*  
+    paths-ignore: 
+      - 'docs/**'
+      - 'scripts/*.sh'
+    tags: 
+      - v1.*
+
+  issues: 
+    types: [opened, closed, reopened]  
+
+  label: 
+    types: [created, edited, deleted]  
+
+  schedule: 
+    - cron: '30 5,17 * * 0'
+
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Ambiente de deploy'
+        required: true
+        default: 'dev' 
+env: 
+  ENVIRONMENT: "dev"
+
+
+jobs: 
+  manual_test_pipeline:
+    runs-on: ubuntu-latest
+    
+    steps: 
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Command
+        run: echo "Teste de pipeline manual"
+        
+      - name: Build my App
+        run: echo "Building my app"  
+
+      
